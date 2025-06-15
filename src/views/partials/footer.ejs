@@ -1,0 +1,27 @@
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Common JavaScript functions
+        function confirmDelete(id) {
+            if (confirm('Are you sure you want to delete this student?')) {
+                fetch(`/api/students/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error deleting student: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the student');
+                });
+            }
+        }
+    </script>
+</body>
+</html> 

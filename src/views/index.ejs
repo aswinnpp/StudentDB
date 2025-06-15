@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+
+<h1 class="mb-4">Student List</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Grade</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% students.forEach(student => { %>
+                <tr>
+                    <td><%= student.firstName %> <%= student.lastName %></td>
+                    <td><%= student.email %></td>
+                    <td><%= student.age %></td>
+                    <td><%= student.grade %></td>
+                    <td class="action-buttons">
+                        <a href="/admin/edit/<%= student._id %>" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button onclick="confirmDelete('<%= student._id %>')" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('partials/footer') %> 
