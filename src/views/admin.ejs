@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <a href="/">&larr; Back to Home</a>
+
+  <!-- Add Student Form -->
+  <h2>Add Student</h2>
+  <form action="/add" method="POST" class="form-card">
+    <div class="form-group">
+      <label>Name</label>
+      <input name="name" required />
+    </div>
+
+    <div class="form-group">
+      <label>Mark</label>
+      <input name="mark" type="number" required />
+    </div>
+
+    <div class="form-group">
+      <label>Class</label>
+      <input name="class" required />
+    </div>
+
+    <div class="form-group">
+      <label>Grade</label>
+      <input name="grade" required />
+    </div>
+
+    <div class="form-group">
+      <label>Roll No</label>
+      <input name="rollno" type="number" required />
+    </div>
+
+    <button type="submit">Add Student</button>
+  </form>
+
+  <!-- All Students Table -->
+  <h2>All Students</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Mark</th>
+        <th>Class</th>
+        <th>Grade</th>
+        <th>Roll No</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% students.forEach(s => { %>
+        <tr>
+          <td><%= s.name %></td>
+          <td><%= s.mark %></td>
+          <td><%= s.class %></td>
+          <td><%= s.grade %></td>
+          <td><%= s.rollno %></td>
+          <td>
+            <button onclick="openEditModal('<%= s._id %>', '<%= s.name %>', <%= s.mark %>, '<%= s.class %>', '<%= s.grade %>', <%= s.rollno %>)">
+              Edit
+            </button>
+            <button style="background-color: red;" onclick="confirmDelete('<%= s._id %>')">
+              Delete
+            </button>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Edit Student</h2>
+      <form id="editForm" method="POST">
+        <input type="hidden" id="editId" />
+
+        <div class="form-group">
+          <label>Name</label>
+          <input id="editName" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Mark</label>
+          <input id="editMark" name="mark" type="number" required />
+        </div>
+
+        <div class="form-group">
+          <label>Class</label>
+          <input id="editClass" name="class" required />
+        </div>
+
+        <div class="form-group">
+          <label>Grade</label>
+          <input id="editGrade" name="grade" required />
+        </div>
+
+        <div class="form-group">
+          <label>Roll No</label>
+          <input id="editRollno" name="rollno" type="number" required />
+        </div>
+
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <h2>⚠️ Confirm Delete</h2>
+      <p>Are you sure you want to delete this student?</p>
+      <form id="deleteForm" method="POST">
+        <button type="submit" style="background-color: red;">Yes, Delete</button>
+        <button type="button" onclick="closeDeleteModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openEditModal(id, name, mark, className, grade, rollno) {
+      document.getElementById('editModal').style.display = 'block';
+
+      document.getElementById('editId').value = id;
+      document.getElementById('editName').value = name;
+      document.getElementById('editMark').value = mark;
+      document.getElementById('editClass').value = className;
+      document.getElementById('editGrade').value = grade;
+      document.getElementById('editRollno').value = rollno;
+
+      document.getElementById('editForm').action = `/update/${id}`;
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    function confirmDelete(id) {
+      const form = document.getElementById('deleteForm');
+      form.action = `/delete/${id}`;
+      document.getElementById('deleteModal').style.display = 'block';
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+      const editModal = document.getElementById('editModal');
+      const deleteModal = document.getElementById('deleteModal');
+      if (event.target === editModal) {
+        editModal.style.display = 'none';
+      }
+      if (event.target === deleteModal) {
+        deleteModal.style.display = 'none';
+      }
+    };
+  </script>
+</body>
+</html>
