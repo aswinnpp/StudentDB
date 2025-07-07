@@ -1,4 +1,4 @@
-// src/routes/studentRoutes.ts
+
 import express from 'express';
 import {
   getAllStudents,
